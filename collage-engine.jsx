@@ -453,12 +453,17 @@ export default function CollageEngine() {
           <canvas ref={canvasRef} width={W} height={H} style={S.canvas} />
           {!imgs.length && (
             <div style={S.emptyState}>
-              <div style={{ fontSize: "11px", letterSpacing: "0.28em", color: "#252525" }}>
-                DROP IMAGES HERE
-              </div>
-              <div style={{ fontSize: "9px", letterSpacing: "0.14em", color: "#1c1c1c" }}>
-                jpg / png / webp / heic
-              </div>
+              {[
+                "UPLOAD photos via the button below, or drag & drop onto the canvas",
+                "RANDOMIZE to shuffle the layout, or set a seed to lock a composition",
+                "ORDER ←→ CHAOS controls image layering and depth",
+                "SQUARE / HORIZONTAL / VERTICAL sets the canvas shape",
+                "EXPORT to preview the finished collage, then right-click to save",
+              ].map((line, i) => (
+                <div key={i} style={{ fontSize: "9px", letterSpacing: "0.14em", color: "#ffffff", opacity: 0.15, textAlign: "center" }}>
+                  — {line}
+                </div>
+              ))}
             </div>
           )}
         </div>
