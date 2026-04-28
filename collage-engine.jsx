@@ -21,6 +21,7 @@ export default function CollageEngine() {
   const [chaos, setChaos] = useState(0.4);
   const [seed, setSeed] = useState(1337);
   const [aspect, setAspect] = useState("horizontal");
+  const [grunge, setGrunge] = useState(0);
   const [dragging, setDragging] = useState(false);
   const [count, setCount] = useState(0);
   const [converting, setConverting] = useState(false);
@@ -233,7 +234,56 @@ export default function CollageEngine() {
       ctx.globalCompositeOperation = "source-over";
       ctx.translate(cx, cy);
       ctx.rotate(angle);
+
+      const grungeRand = mkRand(seed ^ (i * 0xf1e2d3 + 1));
+      if (grunge > 0) {
+        const sat  = 1 - grunge * (0.3 + grungeRand() * 0.5);
+        const cont = 1 + grunge * (0.05 + grungeRand() * 0.15);
+        const sep  = grunge * (0.08 + grungeRand() * 0.22);
+        ctx.filter = `saturate(${sat.toFixed(2)}) contrast(${cont.toFixed(2)}) sepia(${sep.toFixed(2)})`;
+      }
       ctx.drawImage(img, sx, sy, sw, sh, -rdw / 2, -rdh / 2, rdw, rdh);
+      ctx.filter = "none";
+
+      if (grunge > 0) {
+        // scratches
+        const scratchCount = Math.floor(grunge * 6 * grungeRand() + grunge * 2);
+        ctx.strokeStyle = `rgba(255,245,220,${(0.12 + grungeRand() * 0.18).toFixed(2)})`;
+        ctx.lineWidth = 0.5 + grungeRand() * 0.8;
+        for (let s = 0; s < scratchCount; s++) {
+          const x1 = (grungeRand() - 0.5) * rdw;
+          const y1 = (grungeRand() - 0.5) * rdh;
+          const len = rdw * (0.2 + grungeRand() * 0.5);
+          const ang = (grungeRand() - 0.5) * 0.4;
+          ctx.beginPath();
+          ctx.moveTo(x1, y1);
+          ctx.lineTo(x1 + Math.cos(ang) * len, y1 + Math.sin(ang) * len);
+          ctx.stroke();
+        }
+
+        // vignette
+        if (grunge > 0.05) {
+          const vgAlpha = grunge * (0.4 + grungeRand() * 0.35);
+          const grad = ctx.createRadialGradient(0, 0, rdw * 0.25, 0, 0, rdw * 0.75);
+          grad.addColorStop(0, "rgba(0,0,0,0)");
+          grad.addColorStop(1, `rgba(0,0,0,${vgAlpha.toFixed(2)})`);
+          ctx.globalAlpha = alpha;
+          ctx.globalCompositeOperation = "multiply";
+          ctx.fillStyle = grad;
+          ctx.fillRect(-rdw / 2, -rdh / 2, rdw, rdh);
+          ctx.globalCompositeOperation = "source-over";
+        }
+
+        // per-image grain
+        if (grainRef.current && grunge > 0.05) {
+          const pat = ctx.createPattern(grainRef.current, "repeat");
+          ctx.globalAlpha = grunge * (0.06 + grungeRand() * 0.08);
+          ctx.globalCompositeOperation = "overlay";
+          ctx.fillStyle = pat;
+          ctx.fillRect(-rdw / 2, -rdh / 2, rdw, rdh);
+          ctx.globalCompositeOperation = "source-over";
+        }
+      }
 
       if (rand() > 0.62) {
         ctx.globalAlpha = 0.07 + rand() * 0.1;
@@ -255,7 +305,7 @@ export default function CollageEngine() {
       ctx.globalAlpha = 1;
       ctx.globalCompositeOperation = "source-over";
     }
-  }, [imgs, chaos, seed, aspect]);
+  }, [imgs, chaos, seed, aspect, grunge]);
 
   useEffect(() => { draw(); }, [draw]);
 
@@ -477,6 +527,16 @@ export default function CollageEngine() {
               onChange={e => setChaos(parseFloat(e.target.value))}
             />
             <span style={{ ...S.label, color: "#ff2a2a" }}>CHAOS</span>
+          </div>
+
+          <div style={S.sliderGroup}>
+            <span style={{ ...S.label, color: "#3a3a3a" }}>CLEAN</span>
+            <input
+              type="range" min="0" max="1" step="0.01"
+              value={grunge}
+              onChange={e => setGrunge(parseFloat(e.target.value))}
+            />
+            <span style={{ ...S.label, color: "#ff2a2a" }}>GRUNGE</span>
           </div>
 
           <button onClick={reroll} style={btn()}>↻ RANDOMIZE</button>
