@@ -330,7 +330,7 @@ export default function CollageEngine() {
   const S = {
     root: {
       background: "#0c0c0c",
-      minHeight: "100vh",
+      height: "100vh",
       fontFamily: '"IBM Plex Mono", "Courier New", monospace',
       color: "#c8c4bc",
       display: "flex",
@@ -338,6 +338,7 @@ export default function CollageEngine() {
       gap: "10px",
       padding: "14px",
       boxSizing: "border-box",
+      overflow: "hidden",
     },
     header: {
       display: "flex",
@@ -352,8 +353,21 @@ export default function CollageEngine() {
       border: `1px solid ${dragging ? "#ff2a2a" : "#1c1c1c"}`,
       transition: "border-color 0.15s",
       lineHeight: 0,
+      flex: 1,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      overflow: "hidden",
+      minHeight: 0,
     },
-    canvas: { width: "100%", height: "auto", display: "block" },
+    canvas: {
+      aspectRatio: `${W}/${H}`,
+      maxWidth: "100%",
+      maxHeight: "100%",
+      width: "auto",
+      height: "auto",
+      display: "block",
+    },
     emptyState: {
       position: "absolute", inset: 0,
       display: "flex", flexDirection: "column",
