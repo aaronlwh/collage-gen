@@ -519,24 +519,25 @@ export default function CollageEngine() {
         </div>
 
         <div style={S.controls}>
-          <div style={S.sliderGroup}>
-            <span style={{ ...S.label, color: "#3a3a3a" }}>ORDER</span>
-            <input
-              type="range" min="0" max="1" step="0.01"
-              value={chaos}
-              onChange={e => setChaos(parseFloat(e.target.value))}
-            />
-            <span style={{ ...S.label, color: "#ff2a2a" }}>CHAOS</span>
-          </div>
-
-          <div style={S.sliderGroup}>
-            <span style={{ ...S.label, color: "#3a3a3a" }}>CLEAN</span>
-            <input
-              type="range" min="0" max="1" step="0.01"
-              value={grunge}
-              onChange={e => setGrunge(parseFloat(e.target.value))}
-            />
-            <span style={{ ...S.label, color: "#ff2a2a" }}>GRUNGE</span>
+          <div style={{ display: "flex", flexDirection: "column", gap: "6px", flex: "1 1 180px", minWidth: "160px" }}>
+            <div style={S.sliderGroup}>
+              <span style={{ ...S.label, color: "#3a3a3a" }}>ORDER</span>
+              <input
+                type="range" min="0" max="1" step="0.01"
+                value={chaos}
+                onChange={e => setChaos(parseFloat(e.target.value))}
+              />
+              <span style={{ ...S.label, color: "#ff2a2a" }}>CHAOS</span>
+            </div>
+            <div style={S.sliderGroup}>
+              <span style={{ ...S.label, color: "#3a3a3a" }}>CLEAN</span>
+              <input
+                type="range" min="0" max="1" step="0.01"
+                value={grunge}
+                onChange={e => setGrunge(parseFloat(e.target.value))}
+              />
+              <span style={{ ...S.label, color: "#ff2a2a" }}>GRUNGE</span>
+            </div>
           </div>
 
           <button onClick={reroll} style={btn()}>↻ RANDOMIZE</button>
