@@ -460,7 +460,7 @@ export default function CollageEngine() {
                 "SQUARE / HORIZONTAL / VERTICAL sets the canvas shape",
                 "EXPORT to preview the finished collage, then right-click to save",
               ].map((line, i) => (
-                <div key={i} style={{ fontSize: "9px", letterSpacing: "0.14em", color: "#ffffff", opacity: 0.15, textAlign: "center" }}>
+                <div key={i} style={{ fontSize: "10.8px", letterSpacing: "0.14em", color: "#ffffff", opacity: 1, lineHeight: "2", textAlign: "center" }}>
                   — {line}
                 </div>
               ))}
