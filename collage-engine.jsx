@@ -430,7 +430,7 @@ export default function CollageEngine() {
     },
     sliderGroup: {
       display: "flex", alignItems: "center",
-      gap: "10px", flex: "1 1 180px", minWidth: "160px",
+      gap: "5px", flex: "1 1 180px", minWidth: "160px",
     },
     label: { fontSize: "9px", letterSpacing: "0.18em", whiteSpace: "nowrap", userSelect: "none" },
   };
@@ -519,7 +519,7 @@ export default function CollageEngine() {
         </div>
 
         <div style={S.controls}>
-          <div style={{ display: "flex", flexDirection: "column", gap: "6px", flex: "1 1 180px", minWidth: "160px" }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "3px", flex: "1 1 180px", minWidth: "160px" }}>
             <div style={S.sliderGroup}>
               <span style={{ ...S.label, color: "#3a3a3a" }}>ORDER</span>
               <input
